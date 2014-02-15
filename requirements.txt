@@ -1,0 +1,7 @@
+Django==1.6.2
+South==0.8.4
+argparse==1.2.1
+django-backbone==0.3.1
+django-bootstrap-form==3.1
+pytz==2013.9
+wsgiref==0.1.2

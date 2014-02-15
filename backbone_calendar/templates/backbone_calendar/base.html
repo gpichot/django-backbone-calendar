@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% load i18n %}
+
+
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock %}
+
+{% block javascripts %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}libs/bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}
