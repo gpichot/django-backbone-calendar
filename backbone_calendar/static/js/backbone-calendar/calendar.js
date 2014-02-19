@@ -122,6 +122,19 @@ $(document).ready(function() {
     var Events = Backbone.Collection.extend({
         model: Event,
         url: calendar.url_root,
+        initialize: function() {
+            this.bind('add', this.refreshNav);
+            this.bind('remove', this.refreshNav);
+        },
+        refreshNav: function() {
+            console.log('Refreshing the nav');
+            var counts = _.countBy(this.models, function(model) {
+                return model.get('agenda');
+            });
+            _.each(counts, function(count, pk) {
+                $('.badge[data-id=' + pk + ']').text(count);
+            });
+        },
     });
 
     var EventsView = Backbone.View.extend({

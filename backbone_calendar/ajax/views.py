@@ -6,7 +6,7 @@ from django.db.models import Q
 
 
 from .mixins import JSONResponseMixin
-from ..models import Event
+from ..models import Event, Calendar
 
 
 def get_start_and_end(request):
@@ -44,3 +44,19 @@ class PlaceEventsAjaxView(JSONResponseMixin, generic.ListView):
         )
 
         return event_list_as_fullcalendar(events)
+
+
+class AgendaForCalendarView(JSONResponseMixin, generic.DetailView):
+    model = Calendar
+    context_data = 'agendas'
+    context_object = 'calendar'
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(AgendaForCalendarView, self).get_context_data(
+            *args, **kwargs
+        )
+
+        context[self.context_data] = Calendar.agendas.values_list('pk', 'name')
+
+        return context
+

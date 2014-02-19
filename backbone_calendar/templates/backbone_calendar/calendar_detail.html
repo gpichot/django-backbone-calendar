@@ -7,7 +7,16 @@
 - {{ block.super}}
 {% endblock %}
 
-
+{% block calendar-nav %}
+<ul class="list-group">
+    {% for agenda in calendar.agendas.all %}
+    <li class="list-group-item">
+        <span class="badge" data-id="{{ agenda.pk }}">0</span>
+        {{ agenda }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">

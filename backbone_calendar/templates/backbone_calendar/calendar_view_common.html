@@ -3,7 +3,16 @@
 {% load i18n %}
 
 {% block content %}
-<div id="calendar"></div>
+<div class="row">
+    <div class="col-md-9">
+        <div id="calendar"></div>
+    </div>
+    <div class="col-md-3">
+        {% block calendar-nav %}
+
+        {% endblock %}
+    </div>
+</div>
 
 {% if editable_calendar %}
 {% load bootstrap %}
