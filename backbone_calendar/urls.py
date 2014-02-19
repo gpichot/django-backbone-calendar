@@ -3,7 +3,9 @@ from django.conf.urls import patterns, include, url
 import backbone
 backbone.autodiscover()
 
-from .views import PlaceCalendarView, PlaceCalendarEditView
+from .views import \
+    PlaceCalendarView, PlaceCalendarEditView, \
+    CalendarView, CalendarEditView
 
 
 urlpatterns = patterns(
@@ -21,7 +23,7 @@ urlpatterns = patterns(
         include('backbone_calendar.ajax.urls'),
     ),
 
-    # Planning Edit
+    # Planning view
     url(
         r'^(?P<place_slug>[\w-]+)/planning$',
         PlaceCalendarView.as_view(),
@@ -32,6 +34,20 @@ urlpatterns = patterns(
         r'^(?P<place_slug>[\w-]+)/planning/edit$',
         PlaceCalendarEditView.as_view(),
         name="calendar-planning-edit",
+    ),
+
+    # Calendar view
+    url(
+        r'^(?P<calendar_slug>[\w-]+)/show$',
+        CalendarView.as_view(),
+        name="calendar-detail",
+    ),
+
+    # Calendar Edit
+    url(
+        r'^(?P<calendar_slug>[\w-]+)/edit$',
+        CalendarEditView.as_view(),
+        name="calendar-edit",
     ),
 
 )

@@ -1,8 +1,7 @@
 from django.views import generic
 
 
-from .models import Place
-from .forms import EventForm
+from .models import Place, Calendar
 from .mixins import CalendarEditMixin
 
 
@@ -13,13 +12,14 @@ class PlaceCalendarView(generic.DetailView):
 
 
 class PlaceCalendarEditView(CalendarEditMixin, PlaceCalendarView):
+    pass
 
-    def get_context_data(self, **kwargs):
-        context = super(PlaceCalendarView, self).get_context_data(**kwargs)
-        
-        context_edit = CalendarEditMixin.get_context_data(self, **kwargs)
 
-        
-        context_edit['calendar_event_form'] = EventForm()
+class CalendarView(generic.DetailView):
+    model = Calendar
+    slug_url_kwarg = 'calendar_slug'
+    context_object_name = 'calendar'
 
-        return context_edit
+
+class CalendarEditView(CalendarEditMixin, CalendarView):
+    pass

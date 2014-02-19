@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block title %}
-{% blocktrans %}Planning for {{ place }}{% endblocktrans %}
+{% blocktrans %}{{ place }} Calendar{% endblocktrans %}
 - {{ block.super}}
 {% endblock %}
 
@@ -14,7 +14,7 @@
     var calendar = {
         csrf_token: '{{ csrf_token }}',
         url_root: '{% url 'backbone:backbone_calendar_event' %}',
-        places: [{{ place.pk }}, ],
+        agendas: [{{ calendar.agenda_pks|join:"," }}, ],
     };
 </script>
 {{ block.super }}

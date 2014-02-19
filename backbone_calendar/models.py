@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 
 class Place(models.Model):
@@ -49,10 +50,19 @@ class Calendar(models.Model):
     def __unicode__(self):
         return self.name
 
+    def agenda_pks(self):
+        return self.agendas.values_list('pk', flat=True)
+
+    def get_absolute_url(self):
+        return reverse("calendar-detail", kwargs={
+            'calendar_slug': self.slug,
+        })
+
     class Meta:
         ordering = ('name', )
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
+
 
 
 class Agenda(models.Model):
