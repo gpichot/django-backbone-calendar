@@ -125,14 +125,37 @@ $(document).ready(function() {
         initialize: function() {
             this.bind('add', this.refreshNav);
             this.bind('remove', this.refreshNav);
+
+            var collection = this;
+            $('.agenda-item').click(function() {
+                var item = $(this);
+                var pk = parseInt(item.attr('data-id'));
+                if(item.hasClass('active')) {
+                    calendar.agendas = _.without(calendar.agendas, pk);
+                    item.removeClass('active');
+                    collection.trigger('delete_agenda', pk);
+                } else {
+                    calendar.agendas.push(pk);
+                    item.addClass('active');
+                    collection.trigger('add_agenda', pk);
+                }
+
+            });
         },
         refreshNav: function() {
-            console.log('Refreshing the nav');
             var counts = _.countBy(this.models, function(model) {
                 return model.get('agenda');
             });
-            _.each(counts, function(count, pk) {
-                $('.badge[data-id=' + pk + ']').text(count);
+            $('.agenda-item[data-id]').each(function(i, item) {
+                var item = $(item);
+                var pk = item.attr('data-id');
+                if(counts[pk] !== undefined) {
+                    item.addClass('active');
+                    item.find('.badge').text(counts[pk]);
+                } else {
+                    item.removeClass('active');
+                }
+
             });
         },
     });
@@ -144,6 +167,8 @@ $(document).ready(function() {
 
             this.collection.bind('reset', this.addAll);
             this.collection.bind('add', this.addOne);
+            this.collection.bind('delete_agenda', this.deleteAgenda);
+            this.collection.bind('add_agenda', this.addAgenda);
 
 
             this.eventView = new EventView();
@@ -162,6 +187,14 @@ $(document).ready(function() {
             $(this.el).fullCalendar(options.fullCalendar);
 
         },
+        deleteAgenda: function(pk) {
+            $(this.el).fullCalendar('removeEvents', function(event) {
+                return event.agenda == pk;
+            });
+        },
+        addAgenda: function(pk) {
+            _.each(this.collection.where({agenda: pk}), this.addOne);
+        },
         addAll: function() {
             $(this.el).fullCalendar('addEventSource', this.collection.toJSON());
         },
@@ -176,6 +209,9 @@ $(document).ready(function() {
             };
             if(calendar.places !== undefined && calendar.places.length > 0) {
                 data.places = calendar.places;
+            }
+            if(calendar.agendas !== undefined && calendar.agendas.length > 0) {
+                data.agendas = calendar.agendas;
             }
 
             events.fetch({

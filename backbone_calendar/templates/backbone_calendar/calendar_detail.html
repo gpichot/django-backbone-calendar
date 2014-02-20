@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block calendar-nav %}
-<ul class="list-group">
+<div class="list-group">
     {% for agenda in calendar.agendas.all %}
-    <li class="list-group-item">
-        <span class="badge" data-id="{{ agenda.pk }}">0</span>
+    <a href="#" class="list-group-item agenda-item active" data-id="{{ agenda.pk }}">
+        <span class="badge">0</span>
         {{ agenda }}
-    </li>
+    </a>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}
 
 {% block javascripts %}
