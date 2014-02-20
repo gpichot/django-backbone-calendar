@@ -7,6 +7,15 @@
 - {{ block.super}}
 {% endblock %}
 
+{% block calendar-nav %}
+<p class="well">
+    <a href="{% url 'planning-ical' place_slug=place.slug %}"
+        class="btn btn-success"
+        >
+        {% trans 'Download iCalendar file (.ics)' %}
+    </a>
+</p>
+{% endblock %}
 
 
 {% block javascripts %}

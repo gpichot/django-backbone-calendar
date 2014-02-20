@@ -1,12 +1,15 @@
 from django.conf.urls import patterns, include, url
 
 import backbone
-backbone.autodiscover()
 
+
+from .export import urls
 from .views import \
     PlaceCalendarView, PlaceCalendarEditView, \
     CalendarView, CalendarEditView
 
+
+backbone.autodiscover()
 
 urlpatterns = patterns(
     '',
@@ -15,6 +18,12 @@ urlpatterns = patterns(
     url(
         r'^backbone/',
         include(backbone.site.urls),
+    ),
+
+    # Exports
+    url(
+        r'^',
+        include(urls),
     ),
 
     # Ajax Views

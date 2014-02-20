@@ -27,7 +27,6 @@ It uses the followings Django apps :
 ## ToDo
 
 * Recurrent events
-* Export : iCalendar
 * Better support of timezones and locales
 
 [1]: http://arshaw.com/fullcalendar/  

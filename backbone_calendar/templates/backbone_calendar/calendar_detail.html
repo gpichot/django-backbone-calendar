@@ -16,6 +16,13 @@
     </a>
     {% endfor %}
 </div>
+<p class="well">
+    <a href="{% url 'calendar-ical' calendar_slug=calendar.slug %}"
+        class="btn btn-success"
+        >
+        {% trans 'Download iCalendar file (.ics)' %}
+    </a>
+</p>
 {% endblock %}
 
 {% block javascripts %}
