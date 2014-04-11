@@ -5,7 +5,6 @@ import os
 backbone_calendar = __import__('backbone_calendar')
 
 
-
 setup(
     name='django-backbone-calendar',
     packages=find_packages(),
@@ -23,4 +22,10 @@ setup(
         'Programming Language :: Python',
     ],
     keywords=['calendar', 'backbone', 'event', 'agenda'],
+    install_requires=[
+       'Django >= 1.5',
+       'South >= 0.8.4',
+       'django-backbone >= 0.3.1',
+       'django-ical >= 1.2',
+    ],
 )
