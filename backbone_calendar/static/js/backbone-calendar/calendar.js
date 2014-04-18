@@ -1,5 +1,8 @@
 $(document).ready(function() {
     var options = window.options;
+    var calendarOptions = window.calendarOptions;
+    if(calendarOptions === undefined)
+        var calendarOptions = {};
     if(options === undefined) {
         var options = {
             fullCalendar: {},
@@ -175,7 +178,7 @@ $(document).ready(function() {
             this.eventView.collection = this.collection;
         },
         render: function() {
-            options.fullCalendar = $.extend({},
+            options.fullCalendar = $.extend(calendarOptions,
                 options.fullCalendar, {
                     select: this.select,
                     events: this.fetchEvents,
@@ -196,6 +199,7 @@ $(document).ready(function() {
             _.each(this.collection.where({agenda: pk}), this.addOne);
         },
         addAll: function() {
+            console.log(this.collection.toJSON());
             $(this.el).fullCalendar('addEventSource', this.collection.toJSON());
         },
         addOne: function(event) {
