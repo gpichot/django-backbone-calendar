@@ -15,7 +15,7 @@
 </div>
 
 {% if editable_calendar %}
-{% load bootstrap %}
+{% load bootstrap3 %}
 <div id="calendar-event-dialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -27,7 +27,7 @@
             </div>
             <div class="modal-body">
                 <form method="post" action="#">
-                    {{ calendar_event_form|bootstrap }}        
+                    {% bootstrap_form calendar_event_form %}        
                 </form>
             </div>
             <div class="modal-footer">
@@ -55,9 +55,9 @@
 <script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/underscore/js/underscore.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/backbone/js/backbone.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/langs/{{ LANGUAGE_CODE }}.js"></script>
 {% if editable_calendar %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/edit.options.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/langs/{{ LANGUAGE_CODE }}.js"></script>
 {% endif %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/calendar.js"></script>
 {% endblock %}

@@ -26,7 +26,7 @@ setup(
        'Django >= 1.5',
        'South >= 0.8.4',
        'django-backbone >= 0.3.1',
-       'django-bootstrap-form >= 3.1',
+       'django-bootstrap3 >= 4.2.0',
        'django-ical >= 1.2',
     ],
 )
