@@ -57,6 +57,8 @@ $(document).ready(function() {
     }
 
     function addUTC(event) {
+        if(event.get('start').length > 20)
+            return;
         event.set('start', compileUTC(event.get('start')));
         event.set('end', compileUTC(event.get('end')));
     }
