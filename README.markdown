@@ -21,7 +21,7 @@ The Javascript part is widely inspired by the following [article of Ben Teese][7
 ## Django Apps
 It uses the followings Django apps :
 
-* [django-backbone][8] (forked version)
+* [django-backbone][8]
 * [django-bootstrap-form][9]
 
 ## ToDo
@@ -36,5 +36,5 @@ It uses the followings Django apps :
 [5]: http://trentrichardson.com/examples/timepicker/
 [6]: http://getbootstrap.com/
 [7]: http://blog.shinetech.com/2011/08/05/building-a-shared-calendar-with-backbone-js-and-fullcalendar-a-step-by-step-tutorial/
-[8]: https://github.com/gpichot/django-backbone
+[8]: https://github.com/zmathew/django-backbone
 [9]: https://github.com/tzangms/django-bootstrap-form
