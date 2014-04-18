@@ -1,0 +1,11 @@
+<h3>Prochains événements</h3>
+
+<ul class="list-unstyled">
+{% for event in events %}
+    <li>
+        <span class="title">{{ event }}</span> dans {{ event.agenda }}
+        <br />
+        <span class="begin-in">dans {{ event.start|timeuntil }}</span>
+    </li>
+{% endfor %}
+</ul>
