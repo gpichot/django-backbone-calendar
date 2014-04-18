@@ -55,7 +55,7 @@
 <script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/underscore/js/underscore.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/backbone/js/backbone.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/langs/{{ LANGUAGE_CODE }}.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/langs/{{ LANGUAGE_CODE|lower }}.js"></script>
 {% if editable_calendar %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/edit.options.js"></script>
 {% endif %}
