@@ -1,6 +1,13 @@
 $(document).ready(function() {
     var options = window.options;
-    var calendarOptions = window.calendarOptions;
+    var calendarOptions = $.extend({
+        viewDisplay: function (view) {
+            var h = (view.name == "month") ? NaN : 2500;
+            $('#calendar').fullCalendar(
+                'option', 'contentHeight', h
+            );
+        }, 
+    }, window.calendarOptions);
     if(calendarOptions === undefined)
         var calendarOptions = {};
     if(options === undefined) {
@@ -25,6 +32,34 @@ $(document).ready(function() {
         urlRoot: calendar.url_root,
     });
 
+    function compileUTC(string_date, plain) {
+        if(typeof string_date !== 'string') {
+            return string_date;
+        }
+        if(plain === undefined) {
+            var plain = false;
+        }
+        var offset = (new Date()).getTimezoneOffset();
+        var hours = Math.abs(offset / 60);
+        var minutes = Math.abs(offset) - hours * 60;
+        if(plain) {
+            var str = offset < 0 ? '+' : '-';
+        } else {
+            var str = offset < 0 ? '-' : '+';
+        }
+        if(hours <= 9)
+            str += '0';
+        str += hours + ':';
+        if(minutes <= 9)
+            str += '0';
+        str += minutes;
+        return string_date.substr(0, string_date.length - 1) + str;
+    }
+
+    function addUTC(event) {
+        event.set('start', compileUTC(event.get('start')));
+        event.set('end', compileUTC(event.get('end')));
+    }
     var EventView = Backbone.View.extend({
         el: $('#calendar-event-dialog'),
         el_titles: $('#calendar-event-dialog-title'),
@@ -46,17 +81,17 @@ $(document).ready(function() {
             });
 
             this.el_start.datetimepicker(
-                options.datetimepicker
+                calendarOptions.datetimepicker
             );
             this.el_end.datetimepicker(
-                options.datetimepicker
+                calendarOptions.datetimepicker
             );
 
             this.el_save_event.on('click', this.save);
         },
         formatDateTime: function(date) {
             var date_string = $.datepicker.formatDate(
-                options.datetimepicker.dateFormat,
+                calendarOptions.datetimepicker.dateFormat,
                 date
             );
 
@@ -80,11 +115,11 @@ $(document).ready(function() {
             // Convert model datetime
             if(typeof this.model.get('start') === 'string') {
                 this.model.set('start', $.fullCalendar.parseISO8601(
-                    this.model.get('start'))
-                );
+                    this.model.get('start')
+                ));
                 this.model.set('end', $.fullCalendar.parseISO8601(
-                    this.model.get('end'))
-                );
+                    this.model.get('end')
+                ));
             }
 
             if(!this.model.isNew()) {
@@ -104,10 +139,20 @@ $(document).ready(function() {
 
         },
         save: function() {
+            var start = $.datepicker.parseDateTime(
+                calendarOptions.datetimepicker.dateFormat,
+                calendarOptions.datetimepicker.timeFormat,
+                this.el_start.val()
+            );
+            var end = $.datepicker.parseDateTime(
+                calendarOptions.datetimepicker.dateFormat,
+                calendarOptions.datetimepicker.timeFormat,
+                this.el_end.val()
+            );
             this.model.set({
                 'title': this.el_title.val(),
-                'start': this.model.get('start'),
-                'end': this.model.get('end'),
+                'start': start, 
+                'end': end, 
                 'agenda': this.el_agenda.val(),
                 'places': this.el_places.val(),
                 'url': this.el_url.val(),
@@ -115,8 +160,10 @@ $(document).ready(function() {
             if(this.model.isNew()) {
                 this.collection.create(this.model, {success: this.close, });
             } else {
+                //addUTC(this.model);
                 this.model.save({}, {success: this.close, });
             }
+            $(this.el).fullCalendar('rerenderEvents');
         },
         close: function() {
             $(this.el).modal('hide');
@@ -170,6 +217,7 @@ $(document).ready(function() {
 
             this.collection.bind('reset', this.addAll);
             this.collection.bind('add', this.addOne);
+            this.collection.bind('change', this.change);
             this.collection.bind('delete_agenda', this.deleteAgenda);
             this.collection.bind('add_agenda', this.addAgenda);
 
@@ -195,14 +243,36 @@ $(document).ready(function() {
                 return event.agenda == pk;
             });
         },
+        change: function(event) {
+            var fcEvent = $(this.el).fullCalendar('clientEvents', event.get('id'))[0];
+            if(fcEvent !== undefined) {
+                event = event.toJSON();
+                if(typeof event.start === 'object') {
+                    fcEvent.start = compileUTC(
+                        $.fullCalendar.formatDate(event.start, 'u'),
+                        true
+                    );
+                }
+                if(typeof event.end === 'object') {
+                    fcEvent.end = compileUTC(
+                        $.fullCalendar.formatDate(event.end, 'u'),
+                        true
+                    );
+                }
+                fcEvent.title = event.title;
+                $(this.el).fullCalendar('updateEvent', fcEvent);
+            }
+        },
         addAgenda: function(pk) {
             _.each(this.collection.where({agenda: pk}), this.addOne);
         },
         addAll: function() {
-            console.log(this.collection.toJSON());
             $(this.el).fullCalendar('addEventSource', this.collection.toJSON());
         },
         addOne: function(event) {
+            if(typeof event.get('start') === 'string') {
+                addUTC(event);
+            }
             $(this.el).fullCalendar('renderEvent', event.toJSON());
         },
         fetchEvents: function(start, end, callback) {
@@ -234,7 +304,6 @@ $(document).ready(function() {
             this.eventView.render();
         },
         eventDropOrResize: function(fcEvent) {
-            console.log(fcEvent);
             this.collection.get(fcEvent.id).save({
                 start: fcEvent.start,
                 end: fcEvent.end,

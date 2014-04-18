@@ -1,9 +1,11 @@
+import dateutil
 from dateutil import parser as date_parser
 
 from django.forms import widgets
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 import backbone
 
@@ -21,6 +23,7 @@ class EventApiView(backbone.views.BackboneAPIView):
 
     def get(self, request, id=None, **kwargs):
         error_dates = '`start` and `end` parameters are both required.'
+        
         if not id:
             self.start = date_parser.parse(self.request.GET.get('start'))
             self.end = date_parser.parse(self.request.GET.get('end'))
