@@ -1,3 +1,5 @@
+from dateutil import parser as date_parser
+
 from django.forms import widgets
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
@@ -20,8 +22,8 @@ class EventApiView(backbone.views.BackboneAPIView):
     def get(self, request, id=None, **kwargs):
         error_dates = '`start` and `end` parameters are both required.'
         if not id:
-            self.start = self.request.GET.get('start')
-            self.end = self.request.GET.get('end')
+            self.start = date_parser.parse(self.request.GET.get('start'))
+            self.end = date_parser.parse(self.request.GET.get('end'))
 
             if not self.start or not self.end:
                 return HttpResponseBadRequest(_(
@@ -32,11 +34,12 @@ class EventApiView(backbone.views.BackboneAPIView):
     def queryset(self, request):
         qs = super(EventApiView, self).queryset(request)
 
-        if request.method is 'GET':
-            places = self.request.GET.get('places[]', [])
-            agendas = self.request.GET.get('agendas[]', [])
+        if request.method == 'GET':
+            places = map(int, self.request.GET.getlist('places[]', []))
+            agendas = map(int, self.request.GET.getlist('agendas[]', []))
 
-            filter = Q(start__gte=self.start, end__lte=self.end)
+            filter  = Q(start__gte=self.start, start__lte=self.end)
+            filter |= Q(  end__gte=self.start,   end__lte=self.end)
 
             if len(places) > 0:
                 filter &= Q(places__in=places)
