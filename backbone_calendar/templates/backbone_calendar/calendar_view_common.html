@@ -42,15 +42,15 @@
 
 {% block stylesheets %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/fullcalendar.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/v2/fullcalendar.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/v2/fullcalendar.print.css" media="print" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/jquery/css/themes/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/jquery/css/themes/jquery-ui.timepicker.addon.css" />
 {% endblock %}
 
 {% block javascripts %}
 {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL }}libs/fullcalendar/js/fullcalendar.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}libs/fullcalendar/js/v2/fullcalendar.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}libs/underscore/js/underscore.min.js"></script>
