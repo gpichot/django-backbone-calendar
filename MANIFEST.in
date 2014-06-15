@@ -1,2 +1,2 @@
-recursive-include modular_blocks/templates *
-recursive-include modular_blocks/static *
+recursive-include backbone_calendar/templates *
+recursive-include backbone_calendar/static *
