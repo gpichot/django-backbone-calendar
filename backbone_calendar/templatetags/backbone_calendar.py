@@ -61,6 +61,7 @@ class CalendarDisplay(object):
 
     def print_list_agendas(self):
         template = loader.get_template('backbone_calendar/list_agendas.html')
+        agendas = []
         if self.calendar is not None:
             agendas = self.calendar.agendas.all()
         elif self.agendas is not None:
