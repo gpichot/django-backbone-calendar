@@ -1,6 +1,7 @@
 {% extends 'backbone_calendar/base.html' %}
 
 {% load i18n %}
+{% load backbone_calendar %}
 
 {% block content %}
 <div class="row">
@@ -42,22 +43,10 @@
 
 {% block stylesheets %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/v2/fullcalendar.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/fullcalendar/css/v2/fullcalendar.print.css" media="print" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/jquery/css/themes/jquery-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/libs/jquery/css/themes/jquery-ui.timepicker.addon.css" />
+{% calendar_stylesheets %}
 {% endblock %}
 
 {% block javascripts %}
 {{ block.super }}
-<script type="text/javascript" src="{{ STATIC_URL }}libs/fullcalendar/js/fullcalendar.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}libs/jquery/js/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}libs/underscore/js/underscore.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}libs/backbone/js/backbone.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/langs/{{ LANGUAGE_CODE|lower }}.js"></script>
-{% if editable_calendar %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/edit.options.js"></script>
-{% endif %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-calendar/calendar.js"></script>
+{% calendar_javascripts editable=editable_calendar %}
 {% endblock %}

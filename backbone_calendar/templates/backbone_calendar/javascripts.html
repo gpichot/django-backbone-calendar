@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'libs/fullcalendar/js/fullcalendar.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'libs/jquery/js/jquery-ui.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'libs/jquery/js/jquery-ui-timepicker-addon.js' %}"></script>
+<script type="text/javascript" src="{% static 'libs/underscore/js/underscore.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'libs/backbone/js/backbone.min.js' %}"></script>
+{% with 'js/backbone-calendar/langs/'|add:language_code|add:'.js' as language_script %}
+<script type="text/javascript" src="{% static language_script %}"></script>
+{% endwith %}
+{% if editable %}
+<script type="text/javascript" src="{% static 'js/backbone-calendar/edit.options.js' %}"></script>
+{% endif %}
+<script type="text/javascript" src="{% static 'js/backbone-calendar/calendar.js' %}"></script>

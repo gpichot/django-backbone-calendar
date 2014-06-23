@@ -17,7 +17,7 @@
     {% endfor %}
 </div>
 <p class="well">
-    <a href="{% url 'calendar-ical' calendar_slug=calendar.slug %}"
+    <a href="{{ calendar.get_icalendar_url }}"
         class="btn btn-success"
         >
         {% trans 'Download iCalendar file (.ics)' %}

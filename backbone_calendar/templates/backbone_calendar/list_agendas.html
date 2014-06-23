@@ -1,0 +1,9 @@
+{% load i18n %}
+<div class="list-group">
+    {% for agenda in agendas %}
+    <a href="#" class="list-group-item agenda-item active" data-id="{{ agenda.pk }}">
+        <span class="badge" title="{% trans 'Events for this agenda' %}">0</span>
+        {{ agenda }}
+    </a>
+    {% endfor %}
+</div>

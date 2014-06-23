@@ -58,11 +58,15 @@ class Calendar(models.Model):
             'calendar_slug': self.slug,
         })
 
+    def get_icalendar_url(self):
+        return reverse("calendar-ical", kwargs={
+            'calendar_slug': self.slug,
+        })
+
     class Meta:
         ordering = ('name', )
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
-
 
 
 class Agenda(models.Model):
