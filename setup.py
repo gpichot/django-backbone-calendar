@@ -25,7 +25,7 @@ setup(
     install_requires=[
        'Django >= 1.5',
        'django-backbone >= 0.3.2',
-       'django-bootstrap3 >= 4.2.0',
-       'django-ical >= 1.2',
+       'django-bootstrap3 >= 6',
+       'django-ical >= 1.3',
     ],
 )
