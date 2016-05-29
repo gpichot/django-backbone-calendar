@@ -24,9 +24,8 @@ setup(
     keywords=['calendar', 'backbone', 'event', 'agenda'],
     install_requires=[
        'Django >= 1.5',
-       'South >= 0.8.4',
-       'django-backbone >= 0.3.1',
-       'django-bootstrap3 >= 4.2.0',
-       'django-ical >= 1.2',
+       'django-backbone >= 0.3.2',
+       'django-bootstrap3 >= 6',
+       'django-ical >= 1.3',
     ],
 )

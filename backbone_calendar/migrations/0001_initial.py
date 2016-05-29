@@ -1,112 +1,81 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Place'
-        db.create_table(u'backbone_calendar_place', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=100)),
-            ('planning', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal(u'backbone_calendar', ['Place'])
+    dependencies = [
+    ]
 
-        # Adding model 'Calendar'
-        db.create_table(u'backbone_calendar_calendar', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=30)),
-        ))
-        db.send_create_signal(u'backbone_calendar', ['Calendar'])
-
-        # Adding model 'Agenda'
-        db.create_table(u'backbone_calendar_agenda', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=40)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=40)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('calendar', self.gf('django.db.models.fields.related.ForeignKey')(related_name='agendas', to=orm['backbone_calendar.Calendar'])),
-        ))
-        db.send_create_signal(u'backbone_calendar', ['Agenda'])
-
-        # Adding model 'Event'
-        db.create_table(u'backbone_calendar_event', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=60)),
-            ('start', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('end', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('agenda', self.gf('django.db.models.fields.related.ForeignKey')(related_name='events', to=orm['backbone_calendar.Agenda'])),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('allDay', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal(u'backbone_calendar', ['Event'])
-
-        # Adding M2M table for field places on 'Event'
-        m2m_table_name = db.shorten_name(u'backbone_calendar_event_places')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('event', models.ForeignKey(orm[u'backbone_calendar.event'], null=False)),
-            ('place', models.ForeignKey(orm[u'backbone_calendar.place'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['event_id', 'place_id'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Place'
-        db.delete_table(u'backbone_calendar_place')
-
-        # Deleting model 'Calendar'
-        db.delete_table(u'backbone_calendar_calendar')
-
-        # Deleting model 'Agenda'
-        db.delete_table(u'backbone_calendar_agenda')
-
-        # Deleting model 'Event'
-        db.delete_table(u'backbone_calendar_event')
-
-        # Removing M2M table for field places on 'Event'
-        db.delete_table(db.shorten_name(u'backbone_calendar_event_places'))
-
-
-    models = {
-        u'backbone_calendar.agenda': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Agenda'},
-            'calendar': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'agendas'", 'to': u"orm['backbone_calendar.Calendar']"}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '40'})
-        },
-        u'backbone_calendar.calendar': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Calendar'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        u'backbone_calendar.event': {
-            'Meta': {'ordering': "('start',)", 'object_name': 'Event'},
-            'agenda': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'events'", 'to': u"orm['backbone_calendar.Agenda']"}),
-            'allDay': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'end': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'places': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'events'", 'blank': 'True', 'to': u"orm['backbone_calendar.Place']"}),
-            'start': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        },
-        u'backbone_calendar.place': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Place'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'planning': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100'})
-        }
-    }
-
-    complete_apps = ['backbone_calendar']
+    operations = [
+        migrations.CreateModel(
+            name='Agenda',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=40, verbose_name='Name')),
+                ('slug', models.SlugField(unique=True, max_length=40, verbose_name='Slug')),
+                ('description', models.TextField(verbose_name='Description', blank=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'agenda',
+                'verbose_name_plural': 'agendas',
+            },
+        ),
+        migrations.CreateModel(
+            name='Calendar',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=30, verbose_name='Name')),
+                ('slug', models.SlugField(unique=True, max_length=30, verbose_name='Slug')),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'calendar',
+                'verbose_name_plural': 'calendars',
+            },
+        ),
+        migrations.CreateModel(
+            name='Event',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=60, verbose_name='Title')),
+                ('start', models.DateTimeField(null=True, verbose_name='Start', blank=True)),
+                ('end', models.DateTimeField(null=True, verbose_name='End', blank=True)),
+                ('url', models.URLField(null=True, verbose_name='URL', blank=True)),
+                ('allDay', models.BooleanField(default=False, help_text=b'Check it if the event is an all-day event', verbose_name='All day')),
+                ('agenda', models.ForeignKey(related_name='events', verbose_name='Agenda', to='backbone_calendar.Agenda')),
+            ],
+            options={
+                'ordering': ('start',),
+                'verbose_name': 'event',
+                'verbose_name_plural': 'events',
+            },
+        ),
+        migrations.CreateModel(
+            name='Place',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100, verbose_name='Name')),
+                ('slug', models.SlugField(unique=True, max_length=100, verbose_name='Slug')),
+                ('planning', models.BooleanField(default=True, help_text=b'\n            If selected forbids that two events occur at the same time\n        ', verbose_name='Planning enabled')),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'place',
+                'verbose_name_plural': 'places',
+            },
+        ),
+        migrations.AddField(
+            model_name='event',
+            name='places',
+            field=models.ManyToManyField(related_name='events', verbose_name='Places', to='backbone_calendar.Place', blank=True),
+        ),
+        migrations.AddField(
+            model_name='agenda',
+            name='calendar',
+            field=models.ForeignKey(related_name='agendas', to='backbone_calendar.Calendar'),
+        ),
+    ]
